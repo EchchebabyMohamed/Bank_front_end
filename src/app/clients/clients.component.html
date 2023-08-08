@@ -1,0 +1,48 @@
+<div class="container mt-2">
+    <ng-container *ngIf="clients|async as listclient; else failureOrloading">
+        <div class="card" *ngIf="clients">
+            <div class="card-header">hello</div>
+            <div class="card-body">
+                <div *ngIf="formGroupCherche">
+                    <form [formGroup]="formGroupCherche" (ngSubmit)="chercherClient()">
+                        <div class="input-group">
+                            <label class="input-group-text">Recherche</label>
+                            <input type="text" class="form-control" formControlName="kwd"
+                                placeholder="Recherche sur un client">
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">nom</th>
+                            <th scope="col">email</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let client of clients | async">
+                            <td>{{client.id}}</td>
+                            <td>{{client.nom}}</td>
+                            <td>{{client.emai}}</td>
+                            <td><button (click)="supprimerClient(client)" type="button" class="btn btn-danger"><i
+                                        class="bi bi-trash"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #failureOrloading>
+        <ng-container *ngIf="errormessage" ;else loading>
+            <div class="text-danger">
+                {{errormessage}}
+            </div>
+        </ng-container>
+        <ng-template #loading>
+            Loadung ......
+        </ng-template>
+    </ng-template>
+</div>

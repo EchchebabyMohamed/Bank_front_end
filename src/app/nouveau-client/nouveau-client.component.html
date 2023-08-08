@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            Nouveau client
+        </div>
+        <div class="card-body">
+            <form [formGroup]="newformulaire" (ngSubmit)="nouveauClient()">
+                <div class="mb-3">
+                    <label for="exampleName" class="form-label">Nom</label>
+                    <input type="email" class="form-control" id="exampleName" formControlName="nom">
+                    <span class="text-danger" *ngIf="newformulaire.controls['emai'].touched &&
+                    newformulaire.controls['nom'].errors &&
+                    newformulaire.controls['nom'].errors['required']">
+                        champs obligatoire
+                    </span>
+
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Adresse email</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" formControlName="emai">
+                    <span class="text-danger" *ngIf="newformulaire.controls['emai'].touched &&
+                    newformulaire.controls['emai'].errors &&
+                    newformulaire.controls['emai'].errors['email']">
+                        Email non valid
+                    </span>
+                </div>
+                <div class="d-grid gap-2 d-md-block">
+                    <button [disabled]="!newformulaire.valid" type="submit"
+                        class="btn btn-blo btn-primary ">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

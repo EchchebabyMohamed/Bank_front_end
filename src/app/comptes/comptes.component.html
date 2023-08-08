@@ -1,0 +1,96 @@
+<div class="container mt-2">
+    <div class="col d-flex">
+        <div class="col col-md-6 me-5">
+            <div class="card">
+                <div class="card-header"> Compte</div>
+                <div class="card-body">
+                    <form [formGroup]="formulaireCompte" (ngSubmit)="rechercherCompte()">
+                        <div class="input-group">
+                            <label for="cherche" class="input-group-text">id de compte:</label>
+                            <input type="email" class="form-control" id="cherche" formControlName="idcompt">
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
+                    <ng-container *ngIf="detailsCompte |async as detail">
+                        <div>
+                            <label><strong> Id de compte est : </strong></label>
+                            <label>{{detail.idcompt}}</label>
+                        </div>
+                        <div>
+                            <label><strong>Montant est: </strong></label>
+                            <label>{{detail.solde | number: '1.2-2'}}</label>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">id</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Montant</th>
+                                    <th scope="col">type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let operation of detail.operationsDtos">
+                                    <th>{{operation.id}}</th>
+                                    <th>{{operation.dateOperation | date :'dd/MM/yyyy'}}</th>
+                                    <th>{{operation.montant | number : '1.2-2'}}</th>
+                                    <th>{{operation.type}}</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul class="nav nav-pills">
+                            <li *ngFor="let item of [].constructor(detail.totalePages); let page = index">
+                                <a [ngClass]="page==pageCourant?'btn-primary':'btn-outline-primary'"
+                                    (click)="changePage(page)" class="btn ms-1 mt-1">{{page}}</a>
+                            </li>
+                        </ul>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <div class="col col-md-6" *ngIf="detailsCompte |async as detail">
+            <div class="card">
+                <div class="card-header">
+                    Les opérations
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="formulaireOperations" (ngSubmit)="orationSurCompte()">
+                        <div class="form-check form-check-inline">
+                            <label>Retrait</label>
+                            <input class="form-check-input" type="radio" formControlName="typeoperation"
+                                value="Retrait">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label>Versement</label>
+                            <input class="form-check-input" type="radio" formControlName="typeoperation"
+                                value="Versement">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label>Virement</label>
+                            <input class="form-check-input" type="radio" formControlName="typeoperation"
+                                value="Virement">
+                        </div>
+                        <div class="mb-3" *ngIf="formulaireOperations.value.typeoperation=='Virement'">
+                            <label>Compte destination</label>
+                            <input class="form-control" type="text" formControlName="idDestination">
+                        </div>
+                        <div class="mb-3">
+                            <label>Montant</label>
+                            <input class="form-control" type="number" formControlName="montant">
+                        </div>
+                        <div class="mb-3">
+                            <label>Description</label>
+                            <input class="form-control" type="text" formControlName="description">
+                        </div>
+                        <div class="d-grid">
+                            <button [disabled]="!formulaireOperations.valid" type="submit"
+                                class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
